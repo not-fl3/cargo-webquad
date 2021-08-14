@@ -7,6 +7,7 @@ pub enum Command {
 #[derive(Debug, Clone)]
 pub struct Arguments {
     pub command: Command,
+    pub release: bool,
     pub example: Option<String>,
     pub assets_folder: Option<String>,
 }
@@ -41,11 +42,13 @@ pub fn parse_cli() -> Arguments {
 
     let mut example = None;
     let mut assets_folder = None;
+    let mut release = false;
 
     loop {
-        match (args.next().as_deref(), args.next().as_deref()) {
-            (Some("--example"), Some(name)) => example = Some(name.to_owned()),
-            (Some("--assets"), Some(name)) => assets_folder = Some(name.to_owned()),
+        match args.next().as_deref() {
+            Some("--example") => example = Some(args.next().unwrap().to_owned()),
+            Some("--assets") => assets_folder = Some(args.next().unwrap().to_owned()),
+            Some("--release") => release = true,
             _ => break,
         };
     }
@@ -53,6 +56,7 @@ pub fn parse_cli() -> Arguments {
     Arguments {
         command,
         example,
+        release,
         assets_folder,
     }
 }

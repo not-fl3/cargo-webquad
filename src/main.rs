@@ -8,7 +8,7 @@ use cargo::{
         },
     },
     ops,
-    util::{self, important_paths::find_root_manifest_for_wd},
+    util::{self, important_paths::find_root_manifest_for_wd, interning::InternedString},
 };
 
 mod cli;
@@ -59,13 +59,17 @@ fn main() {
 
     let jobs = None;
     let compile_mode = CompileMode::Build;
-    let build_config = BuildConfig::new(
+    let mut build_config = BuildConfig::new(
         &config,
         jobs,
         &["wasm32-unknown-unknown".to_string()],
         compile_mode,
     )
     .unwrap();
+
+    if args.release {
+        build_config.requested_profile = InternedString::new("release");
+    }
 
     let bins = vec![];
     let examples = match args.example {
