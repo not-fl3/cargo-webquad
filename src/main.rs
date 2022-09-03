@@ -62,6 +62,7 @@ fn main() {
     let mut build_config = BuildConfig::new(
         &config,
         jobs,
+        false,
         &["wasm32-unknown-unknown".to_string()],
         compile_mode,
     )
@@ -94,10 +95,10 @@ fn main() {
         ),
         target_rustdoc_args: None,
         target_rustc_args: None,
-        target_rustc_crate_types: None,
         local_rustdoc_args: None,
         rustdoc_document_private_items: false,
         honor_rust_version: false,
+        target_rustc_crate_types: None,
     };
 
     let compiled = ops::compile(&ws, &compile_opts).unwrap();
