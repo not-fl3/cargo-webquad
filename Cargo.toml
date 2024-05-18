@@ -1,5 +1,5 @@
 [package]
-name = "cargo-quad"
+name = "cargo-webquad"
 version = "0.1.0"
 authors = ["Fedor Logachev <not.fl3@gmail.com>"]
 edition = "2018"
@@ -24,5 +24,6 @@ name = "android.permission.BLUETOOTH_CONNECT"
 
 [dependencies]
 cargo = "0.62.0"
-devserver_lib = "0.4"
+devserver_lib = {version = "0.4", default-features = false }
+#devserver_lib = { path = "../devserver/devserver_lib" }
 fs_extra = "1.2"
