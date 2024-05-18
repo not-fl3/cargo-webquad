@@ -107,21 +107,32 @@ fn main() {
 
     let wasm_path = &compiled.binaries.first().unwrap().path;
 
-    let macroquad_pkg = ws_resolve
-        .pkg_set
-        .packages()
-        .find(|package| package.name() == "macroquad");
+    // TODO
+    // this is the place to parce something like web.toml and accumulate all JS files
+    // maybe to post-process them, contacitinate, minify and whatnot
+    let js_bundle_path = {
+        let macroquad_pkg = ws_resolve
+            .pkg_set
+            .packages()
+            .find(|package| package.name() == "macroquad");
 
-    assert!(
-        macroquad_pkg.is_some(),
-        "No sapp-wasm in dependencies tree!"
-    );
+        if macroquad_pkg.is_none() {
+            println!("no macroquad in dependencie tree, trying pure miniquad");
 
-    let js_bundle_path = macroquad_pkg
-        .unwrap()
-        .root()
-        .join("js")
-        .join("mq_js_bundle.js");
+            let miniquad_pkg = ws_resolve
+                .pkg_set
+                .packages()
+                .find(|package| package.name() == "miniquad");
+
+            miniquad_pkg.unwrap().root().join("js").join("gl.js")
+        } else {
+            macroquad_pkg
+                .unwrap()
+                .root()
+                .join("js")
+                .join("mq_js_bundle.js")
+        }
+    };
 
     std::fs::copy(js_bundle_path, target_dir.join("mq_js_bundle.js")).unwrap();
     if let Some(assets_folder) = args.assets_folder {
