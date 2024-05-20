@@ -14,9 +14,9 @@ pub struct Arguments {
 
 fn exit_with_usage() -> ! {
     println!("Things currently supported:");
-    println!("cargo quad {{serve|build}}");
-    println!("cargo quad {{serve|build}} --example whatever");
-    println!("cargo quad {{serve|build}} --assets FOLDER");
+    println!("cargo webquad {{serve|build}}");
+    println!("cargo webquad {{serve|build}} --example whatever");
+    println!("cargo webquad {{serve|build}} --assets FOLDER");
 
     std::process::exit(0)
 }
@@ -31,7 +31,7 @@ pub fn parse_cli() -> Arguments {
 
     // if runned as a cargo subcommand - the second argument is "quad" string
     // if runned as a binary - no quad, just the command
-    if matches!(command.as_deref(), Some("quad")) {
+    if matches!(command.as_deref(), Some("webquad")) {
         command = args.next();
     }
     let command = match command.as_deref() {
